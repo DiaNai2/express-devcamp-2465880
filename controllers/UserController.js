@@ -17,7 +17,7 @@ exports.traerUser = async (req, res) => {
 }
 
 //obtener recursos por id 
-exports.traerUserPorId = async(req, res) => {
+exports.traerUserPorId = async (req, res) => {
     const userId = await User.findByPk(req.params.id)
     res.status(200).json({
         "success": true,
@@ -36,15 +36,15 @@ exports.crearUser = async (req, res) => {
 
 
 //put-patch 
-exports.actualizarUser = async(req, res) => {
+exports.actualizarUser = async (req, res) => {
     //actualizar usuario por id
     await User.update(req.body, {
         where: {
-          id: req.params.id
+            id: req.params.id
         }
-      });
-      //consultar datos actualizados
-      const upUser = await User.findByPk(req.params.id)
+    });
+    //consultar datos actualizados
+    const upUser = await User.findByPk(req.params.id)
 
     res.status(200).json({
         "success": true,
@@ -53,8 +53,21 @@ exports.actualizarUser = async(req, res) => {
 }
 
 //DELETE: borara usuario 
-exports.eliminarUser = (req, res) => {
+exports.eliminarUser = async (req, res) => {
+    const u = await User.findByPk(req.params.id)
+    await User.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    //response
     res.status(200).json({
-        "message": `aqui se va a borrar el usuario ${req.params.id}xd`
+        "success": true,
+        "data": u
     })
 }
+// exports.eliminarUser = (req, res) => {
+//     res.status(200).json({
+//         "message": `aqui se va a borrar el usuario ${req.params.id}xd`
+//     })
+// }
